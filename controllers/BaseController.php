@@ -4,10 +4,10 @@ class BaseController
     protected $folder; // Biến có giá trị là thư mục nào đó trong thư mục views, chứa các file view template của phần đang truy cập.
     // public $request;
 
-    public function __construct()
-    {
-        // $this->request = new Request();
-    }
+    // public function __construct()
+    // {
+    //     // $this->request = new Request();
+    // }
 
     // Hàm hiển thị kết quả ra cho người dùng.
     function render($file, $data = array())

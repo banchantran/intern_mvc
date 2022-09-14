@@ -34,7 +34,7 @@ class Session
 
     public static function displaySessionAlerts()
     {
-        
+
         $alerts = self::exists('session_alerts') ? self::get('session_alerts') : [];
         $html = "";
         foreach ($alerts as $type => $msgs) {

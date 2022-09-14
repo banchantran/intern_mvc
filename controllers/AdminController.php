@@ -40,14 +40,16 @@ class AdminController extends BaseController
         if ($id == 'new') {
             $admin = new AdminModel();
         } else {
+
             $admin = AdminModel::findById($id);
         }
+
         if (!empty($_POST)) {
             $admin->password = md5($_POST['password']);
             $admin->name = $_POST['name'];
+
             $admin->email = $_POST['email'];
             $admin->role_type = $_POST['role_type'];
-            $admin->avatar = '1111';
             $admin->ins_id = '1'; // fix sau
             $admin->ins_datetime = date('Y-m-d H:i:s');
             $admin->upd_datetime = 0; // fix sau
@@ -55,20 +57,27 @@ class AdminController extends BaseController
             $admin->del_flag = 0;
             $upload = new UploadModel('avatar');
             $uploadErrors = $upload->validate();
-            if (!empty($upload->tmp)) {
-                $filePath = "assets/uploads/avatars/{$_FILES['avatar']['name']}";
 
-                $upload->upload('D:/ParalineIntern/intern_mvc/' . $filePath);
-                $admin->avatar = $filePath;
-                $admin->save();
-                Session::msg("Create success.", 'success');
-                header('location: /?controller=admin&action=search');
+            $filePath = "assets/uploads/avatars/{$_FILES['avatar']['name']}";
+
+            $upload->upload('D:/ParalineIntern/intern_mvc/' . $filePath);
+            $admin->avatar = $filePath;
+
+            if (isset($_POST['old_avatar']) && $_FILES['avatar']['name'] == NULL) {
+                $admin->avatar = $_POST['old_avatar'];
             }
+            
+            if (!empty($_GET['id'])) {
+                AdminModel::update($admin, ['id' => $id]);
+            } else {
+                $admin->insert();
+            }
+            $msg = ($id == 'new') ? "Create success." : "Update success";
+            Session::msg($msg, 'success');
+            header('location: /?controller=admin&action=search');
         } else {
-            // var_dump([$admin]);
-            // exit();
             $this->role_options = [AdminModel::ADMIN_PERMISSION => 'Admin', AdminModel::SUPER_ADMIN_PERMISSION => 'Super admin'];
-            $this->render('create', [$admin]);
+            $this->render('form', ['admin' => $admin]);
         }
     }
 
@@ -83,11 +92,4 @@ class AdminController extends BaseController
         $this->render('search');
     }
 
-    // public function edit()
-    // {
-    //     if(!empty($_GET['id'])) {
-    //         $id = $_GET['id'];
-    //     }
-    //     AdminModel::findById($id);
-    // }
 }

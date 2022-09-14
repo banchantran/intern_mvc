@@ -15,7 +15,9 @@
 
 <body>
     <?php
-    require "views/layouts/menu.php";
+    if (isset($_GET['controller']) && $_GET['controller'] == 'admin') {
+        require "views/layouts/menu.php";
+    }
     ?>
     <div class="container-fluid p-4">
         <?= Session::displaySessionAlerts(); ?>

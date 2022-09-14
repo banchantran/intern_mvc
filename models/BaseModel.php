@@ -1,31 +1,9 @@
 <?php
 class BaseModel
 {
-    // public $tableName;
-    // public $fillable;
-
-    // public function getAll($fields = [])
-    // {
-    // 	if (empty($fields)) {
-    // 		$fields[] = 'id';
-    // 	}
-
-    // 	// TODO: Implement getAll() method.
-    // 	return "query select {implode($fields) from $this->tableName} where del_flag = " . DELETED_OFF;
-    // }
     protected static $table = "";
     protected static $columns = false;
-    protected $_validationPassed = true, $_errors = [], $_skipUpdate = [];
-    // protected static function getDb($setFetchClass = false)
-    // {
-    //     $db = DB::getInstance();
-    //     if ($setFetchClass) {
-    //         $db->setClass(get_called_class());
-    //         $db->setFetchType(PDO::FETCH_CLASS);
-
-    //     }
-    //     return $db;
-    // }
+   
     public static function insert($data)
     {
         // TODO: Implement create() method.
@@ -75,7 +53,8 @@ class BaseModel
         ]);
     }
 
-    public static function findByEmailAndName($name,$email) {
+    public static function findByEmailAndName($name, $email)
+    {
         $db = DB::getInstance();
         // $a = $db->findByParam(static::$table,['name'=>$name, 'email'=>$email]);
         // $a = list('sql' => $sql, 'bind' => $bind) = self::selectBuilder($params);
@@ -125,65 +104,4 @@ class BaseModel
         return ['sql' => $sql, 'bind' => $bind];
     }
 
-    public function save()
-    {
-        $save = false;
-        // $this->beforeSave();
-        // if ($this->_validationPassed) {
-        $db = DB::getInstance();
-        $values = $this->getValuesForSave();
-        if ($this->isNew()) {
-            $save = $db->insert(static::$table, $values);
-            if ($save) {
-                $this->id = $db->lastInsertId();
-            }
-        } else {
-            $save = $db->update(static::$table, $values, ['id' => $this->id]);
-        }
-        // }
-        return $save;
-    }
-
-    public function getValuesForSave()
-    {
-        $columns = static::getColumns();
-        unset($columns[0]); // bo cot id di 
-        $values = [];
-        foreach ($columns as $column) {
-            if (!in_array($column, $this->_skipUpdate)) {
-                $values[$column] = $this->{$column};
-            }
-        }
-        return $values;
-    }
-
-    public static function getColumns()
-    {
-        if (!static::$columns) {
-            $db = DB::getInstance();
-            $table = static::$table;
-            $sql = "SHOW COLUMNS FROM {$table}";
-            $results = $db->query($sql)->results();
-            $columns = [];
-            foreach ($results as $column) {
-                $columns[] = $column->Field;
-            }
-            static::$columns = $columns;
-        }
-        return static::$columns;
-    }
-
-    // public function update($id, $data)
-    // {
-    // 	// TODO: Implement create() method.
-
-    // 	$data = array_merge($data, [
-    // 		'upd_id' => getSessionAdmin('id'),
-    // 		'upd_datetime' => date('Y-m-d H:i:s')
-    // 	]);
-
-    // 	// check fillable
-
-    // 	// run exec insert db;
-    // }
 }
