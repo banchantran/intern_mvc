@@ -4,7 +4,7 @@ include_once("BaseModel.php");
 
 class UserModel extends BaseModel
 {
-    protected static $table = "user";
+    protected static $table = "users";
     public $fillable = [
         'id',
         'name',

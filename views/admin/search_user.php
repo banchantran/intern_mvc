@@ -2,7 +2,7 @@
     <div class="border border-primary">
         <form method="GET" class="p-4">
             <input type="hidden" name="controller" value="admin">
-            <input type="hidden" name="action" value="search">
+            <input type="hidden" name="action" value="search_user">
             <div class="form-group pb-3 col-6">
                 <label>Email *</label>
                 <input type="email" class="form-control " name="email" required>
@@ -25,7 +25,7 @@
                 <th scope="col">Avatar</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
-                <th scope="col">Role</th>
+                <th scope="col">Status</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -41,10 +41,10 @@
                         </td>
                         <td><?= $value->name ?></td>
                         <td><?= $value->email ?></td>
-                        <td><?= $value->role_type == 1 ? 'Super Admin' : 'Admin' ?></td>
+                        <td><?= $value->status == 1 ? 'Active' : 'Banned' ?></td>
                         <td>
                             <a href="/?controller=admin&action=create&id=<?= $value->id; ?>">Edit</a><br>
-                            <a onclick="return Del('<?= $value->name; ?>')" href="/?controller=admin&action=delete&id=<?= $value->id; ?>">Delete</a>
+                            <a onclick="return Del('<?= $value->name; ?>')" href="/?controller=admin&action=delete_user&id=<?= $value->id; ?>">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach ?>

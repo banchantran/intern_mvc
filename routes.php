@@ -1,7 +1,7 @@
 <?php
 
 $controllers = array(
-    'admin' => ['home', 'search', 'create', 'delete', 'edit'],
+    'admin' => ['home', 'search_admin', 'create', 'delete', 'edit', 'search_user', 'delete_user'],
     'user' => ['login', 'home', 'logout']
 );
 

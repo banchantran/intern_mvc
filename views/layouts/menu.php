@@ -6,7 +6,7 @@
                     Admin management
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="/?controller=admin&action=search">Search</a>
+                    <a class="dropdown-item" href="/?controller=admin&action=search_admin">Search</a>
                     <a class="dropdown-item" href="/?controller=admin&action=create">Create</a>
                 </div>
             </li>
@@ -15,7 +15,7 @@
                     User management
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Search</a>
+                    <a class="dropdown-item" href="/?controller=admin&action=search_user">Search</a>
                     <a class="dropdown-item" href="#">Create</a>
                 </div>
             </li>

@@ -18,8 +18,21 @@ class UserController extends BaseController
     public function home()
     {
         require_once './fbCallback.php';
-        // UserModel::find($fbUser['email']);
-        $this->render('home');
+       
+        $fbUser['avatar'] = $fbUser['picture']['url'];
+        $fbUser['facebook_id'] = $fbUser['id'];
+     
+        unset($fbUser['id']);
+        unset($fbUser['picture']);
+        $user = UserModel::findByEmail($fbUser['email']);
+        if (empty($user)) {
+            UserModel::insert($fbUser);
+            $user = UserModel::findByEmail($fbUser['email']);
+        } else {
+            $_SESSION['current_user'] = $fbUser;
+        }
+
+        $this->render('home',['user'=> $user[0]]);
     }
 
     public function logout()
@@ -27,4 +40,5 @@ class UserController extends BaseController
         session_destroy();
         header('location: /?controller=user&action=login');
     }
+
 }

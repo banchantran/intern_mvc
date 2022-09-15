@@ -58,6 +58,9 @@ class DB
 
     public function insert($table, $values)
     {
+        // var_dump($table);
+        // var_dump($values);
+        // exit;
         $fields = [];
         $binds = [];
         foreach ($values as $key => $value) {
@@ -110,5 +113,4 @@ class DB
     {
         return $this->_lastInsertId;
     }
-
 }

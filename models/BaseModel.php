@@ -21,27 +21,14 @@ class BaseModel
         return $db->update(static::$table, $values, $conditions);
     }
 
-    public static function find($params = [])
-    {
-        $db = DB::getInstance();
-        list('sql' => $sql, 'bind' => $bind) = self::selectBuilder($params);
-        return $db->query($sql, $bind)->results();
-    }
-
-    public static function findFirst($params = [])
-    {
-        $db = DB::getInstance();
-        list('sql' => $sql, 'bind' => $bind) = self::selectBuilder($params);
-        $results = $db->query($sql, $bind)->results();
-        return isset($results[0]) ? $results[0] : false;
-    }
-
     public static function findById($id)
     {
-        return static::findFirst([
-            'conditions' => "id = :id",
-            'bind' => ['id' => $id]
-        ]);
+        $db = DB::getInstance();
+        $table = static::$table;
+        $sql = "SELECT * FROM {$table} WHERE id = $id AND del_flag = 0";
+        // var_dump($sql);
+        // exit;
+        return $db->query($sql)->results();
     }
 
     public static function findByEmailAndName($name, $email)
@@ -52,44 +39,12 @@ class BaseModel
         return $db->query($sql)->results();
     }
 
-    public static function selectBuilder($params = [])
+    public static function findByEmail($email)
     {
-        $columns = array_key_exists('columns', $params) ? $params['columns'] : "*";
+        $db = DB::getInstance();
         $table = static::$table;
-        $sql = "SELECT {$columns} FROM {$table}";
-        list('sql' => $conds, 'bind' => $bind) = self::queryParamBuilder($params);
-        $sql .= $conds;
-        return ['sql' => $sql, 'bind' => $bind];
+        $sql = "SELECT * FROM {$table} WHERE email like '%$email%' AND del_flag = 0";
+        return $db->query($sql)->results();
     }
 
-    public static function queryParamBuilder($params = [])
-    {
-        $sql = "";
-        $bind = array_key_exists('bind', $params) ? $params['bind'] : [];
-
-        // where
-        if (array_key_exists('conditions', $params)) {
-            $conds = $params['conditions'];
-            $sql .= " WHERE {$conds}";
-        }
-
-        // order
-        if (array_key_exists('order', $params)) {
-            $order = $params['order'];
-            $sql .= " ORDER BY {$order}";
-        }
-
-        // limit
-        if (array_key_exists('limit', $params)) {
-            $limit = $params['limit'];
-            $sql .= " LIMIT {$limit}";
-        }
-
-        // offset
-        if (array_key_exists('offset', $params)) {
-            $offset = $params['offset'];
-            $sql .= " OFFSET {$offset}";
-        }
-        return ['sql' => $sql, 'bind' => $bind];
-    }
 }

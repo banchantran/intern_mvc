@@ -1,6 +1,7 @@
 <?php
 require_once('controllers/BaseController.php');
 require_once('models/AdminModel.php');
+require_once('models/UserModel.php');
 require_once('models/UploadModel.php');
 
 class AdminController extends BaseController
@@ -19,15 +20,27 @@ class AdminController extends BaseController
         $this->render('home', $data);
     }
 
-    public function search()
+    public function search_admin()
     {
         if (!empty($_GET['email']) && !empty($_GET['name'])) {
             $email = $_GET['email'];
             $name = $_GET['name'];
             $data = AdminModel::findByEmailAndName($name, $email);
-            $this->render('search', $data);
+            $this->render('search_admin', $data);
         } else {
-            $this->render('search');
+            $this->render('search_admin');
+        }
+    }
+
+    public function search_user()
+    {
+        if (!empty($_GET['email']) && !empty($_GET['name'])) {
+            $email = $_GET['email'];
+            $name = $_GET['name'];
+            $data = UserModel::findByEmailAndName($name, $email);
+            $this->render('search_user', $data);
+        } else {
+            $this->render('search_user');
         }
     }
 
@@ -40,7 +53,7 @@ class AdminController extends BaseController
             $admin = new AdminModel();
         } else {
 
-            $admin = AdminModel::findById($id);
+            $admin = AdminModel::findById($id)[0];
         }
 
         if (!empty($_POST)) {
@@ -69,11 +82,12 @@ class AdminController extends BaseController
             if (!empty($_GET['id'])) {
                 AdminModel::update($admin, ['id' => $id]);
             } else {
-                $admin->insert();
+                $admin = (array) $admin;
+                AdminModel::insert($admin);
             }
             $msg = ($id == 'new') ? "Create success." : "Update success";
             Session::msg($msg, 'success');
-            header('location: /?controller=admin&action=search');
+            header('location: /?controller=admin&action=search_admin');
         } else {
             $this->role_options = [AdminModel::ADMIN_PERMISSION => 'Admin', AdminModel::SUPER_ADMIN_PERMISSION => 'Super admin'];
             $this->render('form', ['admin' => $admin]);
@@ -88,6 +102,16 @@ class AdminController extends BaseController
             AdminModel::update(['del_flag' => '1'], ['id' => $id]);
             Session::msg("Delete success.", 'success');
         }
-        $this->render('search');
+        $this->render('search_admin');
+    }
+
+    public function delete_user()
+    {
+        if (!empty($_GET['id'])) {
+            $id = $_GET['id'];
+            UserModel::update(['del_flag' => '1'], ['id' => $id]);
+            Session::msg("Delete success.", 'success');
+        }
+        $this->render('search_user');
     }
 }
