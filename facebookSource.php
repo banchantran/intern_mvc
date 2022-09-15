@@ -1,5 +1,4 @@
 <?php
-include('vendor/autoload.php') ;
 include('core/configFb.php');
 $helper = $fb->getRedirectLoginHelper();
 $permission = ['email'];

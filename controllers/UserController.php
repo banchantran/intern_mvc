@@ -9,19 +9,15 @@ class UserController extends BaseController
         $this->folder = 'user';
     }
 
-
     public function login()
     {
-        require_once './facebook_source.php';
+        require_once './facebookSource.php';
         $this->render('login', ['loginUrl' => $loginUrl]);
-
-
     }
-
 
     public function home()
     {
-        require_once './fb-callback.php';
+        require_once './fbCallback.php';
         // UserModel::find($fbUser['email']);
         $this->render('home');
     }
@@ -29,7 +25,6 @@ class UserController extends BaseController
     public function logout()
     {
         session_destroy();
-        // header('https://paraline.local:80/?controller=user&action=login');
         header('location: /?controller=user&action=login');
     }
 }

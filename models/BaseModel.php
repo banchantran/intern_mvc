@@ -3,20 +3,11 @@ class BaseModel
 {
     protected static $table = "";
     protected static $columns = false;
-   
+
     public static function insert($data)
     {
-        // TODO: Implement create() method.
         $db = DB::getInstance();
         return $db->insert(static::$table, $data);
-        // $data = array_merge($data, [
-        // 	'ins_id' => getSessionAdmin('id'),
-        // 	'ins_datetime' => date('Y-m-d H:i:s')
-        // ]);
-
-        // check fillable
-
-        // run exec insert db;
     }
 
     public function isNew()
@@ -34,8 +25,6 @@ class BaseModel
     {
         $db = DB::getInstance();
         list('sql' => $sql, 'bind' => $bind) = self::selectBuilder($params);
-        // var_dump($sql);
-        // exit;
         return $db->query($sql, $bind)->results();
     }
 
@@ -103,5 +92,4 @@ class BaseModel
         }
         return ['sql' => $sql, 'bind' => $bind];
     }
-
 }

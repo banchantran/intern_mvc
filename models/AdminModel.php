@@ -20,10 +20,4 @@ class AdminModel extends BaseModel
         'upd_datetime',
         'del_flag',
     ];
-
-    // public function __construct()
-    // {
-    // 	$this->tableName = 'admin_table';
-    // }
-
 }

@@ -26,7 +26,6 @@ class AdminController extends BaseController
             $name = $_GET['name'];
             $data = AdminModel::findByEmailAndName($name, $email);
             $this->render('search', $data);
-            // require_once("views/admin/search.php");
         } else {
             $this->render('search');
         }
@@ -66,7 +65,7 @@ class AdminController extends BaseController
             if (isset($_POST['old_avatar']) && $_FILES['avatar']['name'] == NULL) {
                 $admin->avatar = $_POST['old_avatar'];
             }
-            
+
             if (!empty($_GET['id'])) {
                 AdminModel::update($admin, ['id' => $id]);
             } else {
@@ -91,5 +90,4 @@ class AdminController extends BaseController
         }
         $this->render('search');
     }
-
 }

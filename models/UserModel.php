@@ -19,5 +19,4 @@ class UserModel extends BaseModel
         'upd_datetime',
         'del_flag',
     ];
-
 }
