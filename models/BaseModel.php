@@ -34,6 +34,8 @@ class BaseModel
     {
         $db = DB::getInstance();
         list('sql' => $sql, 'bind' => $bind) = self::selectBuilder($params);
+        // var_dump($sql);
+        // exit;
         return $db->query($sql, $bind)->results();
     }
 
@@ -56,8 +58,6 @@ class BaseModel
     public static function findByEmailAndName($name, $email)
     {
         $db = DB::getInstance();
-        // $a = $db->findByParam(static::$table,['name'=>$name, 'email'=>$email]);
-        // $a = list('sql' => $sql, 'bind' => $bind) = self::selectBuilder($params);
         $table = static::$table;
         $sql = "SELECT * FROM {$table} WHERE name LIKE '%$name%' AND email like '%$email%' AND del_flag = 0";
         return $db->query($sql)->results();
